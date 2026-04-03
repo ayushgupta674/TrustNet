@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ngo")
 @RequiredArgsConstructor
@@ -32,5 +34,18 @@ public class NgoController {
     @GetMapping("/profile/{id}")
     public ResponseEntity<NgoProfile> getProfileById(@PathVariable String id) {
         return ResponseEntity.ok(ngoService.getProfileById(id));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<NgoProfile>> searchNgos(@RequestParam String q) {
+        return ResponseEntity.ok(ngoService.searchNgos(q));
+    }
+
+    @GetMapping("/nearby")
+    public ResponseEntity<List<NgoProfile>> nearbyNgos(
+            @RequestParam double longitude,
+            @RequestParam double latitude,
+            @RequestParam(defaultValue = "10") double radius) {
+        return ResponseEntity.ok(ngoService.findNearbyNgos(longitude, latitude, radius));
     }
 }
