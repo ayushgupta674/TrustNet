@@ -8,4 +8,6 @@ import java.util.List;
 public interface CampaignRepository extends MongoRepository<Campaign, String> {
     List<Campaign> findByNgoId(String ngoId);
     List<Campaign> findByNgoIdAndActive(String ngoId, boolean active);
+
+    long countByActive(boolean active);
 }

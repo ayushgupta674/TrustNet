@@ -34,4 +34,9 @@ public class AdminController {
         String reason = body.get("reason");
         return ResponseEntity.ok(adminService.rejectNgo(id, reason));
     }
+
+    @GetMapping("/analytics")
+    public ResponseEntity<Map<String, Object>> getAnalytics() {
+        return ResponseEntity.ok(adminService.getAnalytics());
+    }
 }
