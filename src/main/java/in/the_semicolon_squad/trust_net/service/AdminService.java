@@ -1,5 +1,6 @@
 package in.the_semicolon_squad.trust_net.service;
 
+import in.the_semicolon_squad.trust_net.enums.NotificationType;
 import in.the_semicolon_squad.trust_net.enums.VerificationStatus;
 import in.the_semicolon_squad.trust_net.model.NgoProfile;
 import in.the_semicolon_squad.trust_net.repository.NgoProfileRepository;
@@ -13,6 +14,7 @@ import java.util.List;
 public class AdminService {
 
     private final NgoProfileRepository ngoProfileRepository;
+    private final NotificationService  notificationService;
 
     public List<NgoProfile> getPendingVerifications() {
         return ngoProfileRepository.findByVerificationStatus(VerificationStatus.PENDING);
@@ -26,7 +28,15 @@ public class AdminService {
         profile.setVerifiedBadge(true);
         profile.setRejectionReason(null);
 
-        return ngoProfileRepository.save(profile);
+        NgoProfile saved = ngoProfileRepository.save(profile);
+
+        notificationService.sendNotification(
+                saved.getUserId(),
+                NotificationType.NGO_VERIFIED,
+                "Congratulations! Your NGO has been verified."
+        );
+
+        return saved;
     }
 
     public NgoProfile rejectNgo(String profileId, String reason) {
