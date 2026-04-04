@@ -4,6 +4,7 @@ class ShortModel {
   final String title;
   final String creatorName;
   final String description;
+  final String? tag;        // 👈 new field
   final bool isFollowing;
 
   ShortModel({
@@ -11,6 +12,7 @@ class ShortModel {
     required this.title,
     required this.creatorName,
     required this.description,
+    this.tag,
     this.isFollowing = false,
   });
 
