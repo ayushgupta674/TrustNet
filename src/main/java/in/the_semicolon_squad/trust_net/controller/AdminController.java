@@ -24,7 +24,8 @@ public class AdminController {
 
     @PutMapping("/verifications/{id}/approve")
     public ResponseEntity<NgoProfile> approveNgo(@PathVariable String id) {
-        return ResponseEntity.ok(adminService.approveNgo(id));
+        NgoProfile ngoProfile = adminService.approveNgo(id);
+        return ResponseEntity.ok(ngoProfile);
     }
 
     @PutMapping("/verifications/{id}/reject")

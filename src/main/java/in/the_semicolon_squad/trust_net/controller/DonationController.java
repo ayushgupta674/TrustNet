@@ -35,9 +35,11 @@ public class DonationController {
         String razorpayOrderId = body.get("razorpayOrderId");
         String razorpayPaymentId = body.get("razorpayPaymentId");
         String signature = body.get("signature");
+        Donation donation = donationService.verifyAndRecord(razorpayOrderId, razorpayPaymentId, signature);
+
 
         return ResponseEntity.ok(
-                donationService.verifyAndRecord(razorpayOrderId, razorpayPaymentId, signature)
+               donation
         );
     }
 

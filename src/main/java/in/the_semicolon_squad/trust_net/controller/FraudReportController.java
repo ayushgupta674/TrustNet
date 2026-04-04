@@ -34,6 +34,7 @@ public class FraudReportController {
 
     @PutMapping("/admin/{id}/dismiss")
     public ResponseEntity<FraudReport> dismiss(@PathVariable String id) {
+        fraudReportService.dismissReport(id);
         return ResponseEntity.ok(fraudReportService.dismissReport(id));
     }
 

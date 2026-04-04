@@ -46,6 +46,8 @@ public class NgoController {
             @RequestParam double longitude,
             @RequestParam double latitude,
             @RequestParam(defaultValue = "10") double radius) {
-        return ResponseEntity.ok(ngoService.findNearbyNgos(longitude, latitude, radius));
+        List<NgoProfile> nearbyNgos = ngoService.findNearbyNgos(longitude, latitude, radius);
+
+        return ResponseEntity.ok(nearbyNgos);
     }
 }
