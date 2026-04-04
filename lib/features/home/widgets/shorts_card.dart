@@ -104,10 +104,7 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (_) => NgoDescriptionScreen(
-                                                ngoName: widget.short.creatorName,
-                                                ngoDescription: widget.short.description,
-                                              ),
+                                              builder: (_) => NgoDetailScreen(ngoId: widget.short.ngoId), // ✅ only ngoId
                                             ),
                                           );
                                         },
@@ -152,9 +149,10 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
                         const SizedBox(height: 12),
 
                         // Follow button
+
                         ElevatedButton(
                           onPressed: () {
-                            ref.read(shortFollowStateProvider.notifier).toggleFollow(widget.short.id, isFollowing);
+                            ref.read(shortFollowStateProvider.notifier).toggleFollow(widget.short.id);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: isFollowing ? Colors.grey.shade700 : const Color(0xFF7C3AED),
