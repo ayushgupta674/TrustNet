@@ -1,9 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../providers/auth_state_provider.dart';
-
 
 class AuthUserSelector extends ConsumerWidget {
   const AuthUserSelector({super.key});
@@ -20,9 +18,9 @@ class AuthUserSelector extends ConsumerWidget {
           height: 55,
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.2),
+            color: Colors.white.withOpacity(0.2),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+            border: Border.all(color: Colors.white.withOpacity(0.3)),
           ),
           child: Row(
             children: AuthUserType.values.map((type) {

@@ -15,17 +15,18 @@ class AuthToggleButton extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          isLoginMode ? "Don't have an account?" : 'Already have an account?',
-          style: const TextStyle(color: Colors.grey),
-        ),
-        TextButton(
-          onPressed: onToggle,
+        Flexible(
           child: Text(
-            isLoginMode ? 'Sign up' : 'Log in',
-            style: const TextStyle(
-              color: Color(0xFF7C3AED),
-              fontWeight: FontWeight.bold,
+            isLoginMode ? "Don't have an account?" : 'Already have an account?',
+            style: const TextStyle(color: Colors.grey),
+          ),
+        ),
+        Flexible(
+          child: TextButton(
+            onPressed: onToggle,
+            child: Text(
+              isLoginMode ? 'Sign up' : 'Log in',
+              style: const TextStyle(color: Color(0xFF7C3AED), fontWeight: FontWeight.bold),
             ),
           ),
         ),

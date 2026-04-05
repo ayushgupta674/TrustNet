@@ -1,6 +1,7 @@
 // lib/features/ngo_detail/views/ngo_detail_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trust_net/features/payments/views/payment_screen.dart';
 import '../../../core/storage/storage_manager.dart';
 import '../../ngo_dashboard/data/models/ngo_profile_model.dart';
 import '../../ngo_dashboard/widgets/post_card.dart';
@@ -40,16 +41,19 @@ class _NgoDetailScreenState extends ConsumerState<NgoDetailScreen> with SingleTi
   }
 
   void _donate(NgoProfileModel ngo) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (_) => PaymentScreen(
-    //       ngoId: ngo.id,
-    //       campaignId: '', // optional; can leave empty for general donation
-    //       amount: 100, // you can let user choose amount
-    //     ),
-    //   ),
-    // );
+
+      print('Donate button tapped for NGO: ${ngo.id}');
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PaymentScreen(
+          ngoId: ngo.id,
+          campaignId: '', // optional; can leave empty for general donation
+          // you can let user choose amount
+        )
+      ),
+    );
   }
 
   @override

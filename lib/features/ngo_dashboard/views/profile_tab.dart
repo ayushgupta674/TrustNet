@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/utils/logout_util.dart';
 import '../providers/ngo_dashboard_providers.dart';
 
 class ProfileTab extends ConsumerWidget {
@@ -104,7 +105,19 @@ class ProfileTab extends ConsumerWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () => LogoutUtil.logout(context),
+              icon: const Icon(Icons.logout),
+              label: const Text('Logout'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 50),
+              ),
+            ),
           ],
+
         ),
       ),
       loading: () => const Center(child: CircularProgressIndicator()),

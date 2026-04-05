@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+// lib/features/auth/widgets/auth_tab_bar.dart
 import 'package:flutter/material.dart';
 
 class AuthTabBar extends StatelessWidget {
@@ -9,33 +8,25 @@ class AuthTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(40),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(40),
-            border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
-          ),
-          child: TabBar(
-            controller: tabController,
-            indicator: BoxDecoration(
-              color: Colors.white.withOpacity(0.25),
-              borderRadius: BorderRadius.circular(40),
-            ),
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white.withOpacity(0.7),
-            labelStyle: const TextStyle(fontWeight: FontWeight.w600),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
-            tabs: const [
-              Tab(text: 'NGO'),
-              Tab(text: 'Donor'),
-              Tab(text: 'Admin'),
-            ],
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(32),
+      ),
+      child: TabBar(
+        controller: tabController,
+        indicator: BoxDecoration(
+          color: const Color(0xFF7C3AED),
+          borderRadius: BorderRadius.circular(32),
         ),
+        indicatorSize: TabBarIndicatorSize.tab, // 👈 Makes indicator fill the full tab
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.grey.shade700,
+        labelPadding: EdgeInsets.zero, // 👈 Removes extra padding around text
+        tabs: const [
+          Tab(text: 'NGO'),
+          Tab(text: 'User'),
+        ],
       ),
     );
   }
