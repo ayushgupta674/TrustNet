@@ -33,6 +33,7 @@ public class PostService {
 
         Post post = new Post();
         post.setNgoId(profile.getId());
+        post.setNgoName(profile.getName()); // ADD THIS LINE
         post.setText(text);
         post.setImageUrl(imageUrl);
         post.setVideoUrl(videoUrl);

@@ -22,6 +22,7 @@ public class Post {
     private String imageUrl;
 
     private String videoUrl;
+    private String ngoName;
 
     private String campaignId;
 
