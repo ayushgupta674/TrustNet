@@ -10,6 +10,16 @@ class AuthUserSelector extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedType = ref.watch(authTypeProvider);
 
+    // Map enum values to display text
+    String getDisplayText(AuthUserType type) {
+      switch (type) {
+        case AuthUserType.ngo:
+          return 'NGO';
+        case AuthUserType.user:
+          return 'DONOR';
+      }
+    }
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
@@ -36,7 +46,7 @@ class AuthUserSelector extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
-                      type.name.toUpperCase(),
+                      getDisplayText(type),
                       style: TextStyle(
                         color: isSelected ? Colors.black : Colors.white,
                         fontWeight: FontWeight.bold,

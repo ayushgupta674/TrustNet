@@ -25,7 +25,7 @@ class AuthTabBar extends StatelessWidget {
         labelPadding: EdgeInsets.zero, // 👈 Removes extra padding around text
         tabs: const [
           Tab(text: 'NGO'),
-          Tab(text: 'User'),
+          Tab(text: 'Donor'),
         ],
       ),
     );

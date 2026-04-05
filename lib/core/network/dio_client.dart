@@ -41,13 +41,11 @@ class DioClient {
         return handler.next(options);
       },
       onError: (error, handler) {
-        if (error is DioException) {
-          print('=== DIO ERROR ===');
-          print('Message: ${error.message}');
-          print('Response data: ${error.response?.data}');
-          print('Status code: ${error.response?.statusCode}');
-        }
-        return handler.next(error);
+        print('=== DIO ERROR ===');
+        print('Message: ${error.message}');
+        print('Response data: ${error.response?.data}');
+        print('Status code: ${error.response?.statusCode}');
+              return handler.next(error);
       },
     ));
   }
@@ -62,9 +60,9 @@ class DioClient {
   }
 
   // POST request
-  Future<Response> post(String path, {dynamic data}) async {
+  Future<Response> post(String path, {dynamic data, Options? options}) async {
     try {
-      final response = await _dio.post(path, data: data);
+      final response = await _dio.post(path, data: data, options: options);
       return response;
     } catch (e) {
       rethrow;

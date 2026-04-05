@@ -19,11 +19,19 @@ class UploadService {
 
   /// Upload a video file to your backend.
   /// [endpoint] can be overridden (e.g., '/upload/video').
+// Inside UploadService class
   Future<String> uploadVideo(File video, {String endpoint = '/upload/video'}) async {
     final formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(video.path),
     });
-    final response = await _dio.post(endpoint, data: formData);
+    final response = await _dio.post(
+      endpoint,  // use the endpoint parameter
+      data: formData,
+      options: Options(
+        sendTimeout: const Duration(seconds: 300),    // 5 minutes
+        receiveTimeout: const Duration(seconds: 300), // 5 minutes
+      ),
+    );
     return response.data['url'];
   }
 

@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             SizedBox(height: 20),
             Text(
-              'UNITY NODE',
+              'TrustNet',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,

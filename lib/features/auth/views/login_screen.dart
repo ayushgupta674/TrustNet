@@ -183,7 +183,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                   const Icon(Icons.volunteer_activism, size: 70, color: Colors.white),
                   const SizedBox(height: 16),
                   const Text(
-                    'Unity Node',
+                    'TrustNet',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
