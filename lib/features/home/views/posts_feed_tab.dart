@@ -9,17 +9,19 @@ import '../../ngo_dashboard/widgets/post_card.dart';
 final feedProvider = FutureProvider<List<PostModel>>((ref) async {
   final dio = DioClient();
   final response = await dio.get(ApiConstants.feed);
-  final List posts = response.data ?? [];
-  List<PostModel> result = [];
-  for (var postJson in posts) {
+  final List allPosts = response.data ?? [];
+  final List<PostModel> result = [];
+  for (var postJson in allPosts) {
+    // Skip posts that have a videoUrl (they belong to shorts)
+    if (postJson['videoUrl'] != null && postJson['videoUrl'].toString().isNotEmpty) {
+      continue;
+    }
     final ngoId = postJson['ngoId'];
     try {
-      // Fetch NGO profile to get the name
       final ngoResponse = await dio.get('${ApiConstants.ngoProfile}/$ngoId');
       final ngoName = ngoResponse.data['name'] ?? 'Unknown NGO';
       result.add(PostModel.fromJson(postJson, ngoName: ngoName));
     } catch (e) {
-      // Fallback if NGO profile fetch fails
       result.add(PostModel.fromJson(postJson, ngoName: 'Unknown NGO'));
     }
   }

@@ -1,10 +1,11 @@
 // lib/features/shorts/widgets/short_page_item.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:video_player/video_player.dart';
 import '../data/model/shorts_model.dart';
 import '../providers/shorts_provider.dart';
 import '../views/ngo_description_screen.dart';
+// fixed import (was ngo_description_screen)
 
 class ShortPageItem extends ConsumerStatefulWidget {
   final ShortModel short;
@@ -16,8 +17,54 @@ class ShortPageItem extends ConsumerStatefulWidget {
 }
 
 class _ShortPageItemState extends ConsumerState<ShortPageItem> {
+  late VideoPlayerController? _videoController;
+  bool _isPlaying = false;
+  bool _isInitialized = false;
+
   bool _isExpanded = false;
   bool _isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeVideo();
+  }
+
+  Future<void> _initializeVideo() async {
+    if (widget.short.videoUrl != null && widget.short.videoUrl!.isNotEmpty) {
+      _videoController = VideoPlayerController.networkUrl(Uri.parse(widget.short.videoUrl!));
+      await _videoController!.initialize();
+      await _videoController!.setLooping(true);
+      if (mounted) {
+        setState(() {
+          _isInitialized = true;
+          _isPlaying = true;
+        });
+        _videoController!.play();
+      }
+    } else {
+      _videoController = null;
+      if (mounted) setState(() => _isInitialized = true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _videoController?.dispose();
+    super.dispose();
+  }
+
+  void _togglePlayPause() {
+    if (_videoController == null) return;
+    setState(() {
+      if (_isPlaying) {
+        _videoController!.pause();
+      } else {
+        _videoController!.play();
+      }
+      _isPlaying = !_isPlaying;
+    });
+  }
 
   void _toggleExpand() {
     setState(() {
@@ -55,13 +102,12 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
     final followState = ref.watch(shortFollowStateProvider);
     final isFollowing = followState[widget.short.id] ?? widget.short.isFollowing;
 
-    // Determine tag text (fallback to "General")
     final tagText = (widget.short.tag != null && widget.short.tag!.isNotEmpty)
         ? widget.short.tag!
         : 'General';
 
     return Container(
-      color: Colors.black87,
+      color: Colors.black,
       child: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -69,6 +115,48 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
               height: constraints.maxHeight,
               child: Stack(
                 children: [
+                  // Video or fallback
+                  if (_videoController != null && _isInitialized)
+                    GestureDetector(
+                      onTap: _togglePlayPause,
+                      child: SizedBox.expand(
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: SizedBox(
+                            width: _videoController!.value.size.width,
+                            height: _videoController!.value.size.height,
+                            child: VideoPlayer(_videoController!),
+                          ),
+                        ),
+                      ),
+                    )
+                  else if (widget.short.imageUrl != null && widget.short.imageUrl!.isNotEmpty)
+                    Image.network(
+                      widget.short.imageUrl!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    )
+                  else
+                    Container(color: Colors.black87),
+
+                  // Gradient overlay for better text visibility (optional)
+                  Positioned.fill(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.6),
+                          ],
+                          stops: const [0.7, 1.0],
+                        ),
+                      ),
+                    ),
+                  ),
+
                   // Main content (bottom-left)
                   Positioned(
                     left: 20,
@@ -78,7 +166,6 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Title
                         Text(
                           widget.short.title,
                           style: const TextStyle(
@@ -89,7 +176,6 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
                         ),
                         const SizedBox(height: 12),
 
-                        // NGO name + verified badge + tag (always shown)
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -104,7 +190,7 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (_) => NgoDetailScreen(ngoId: widget.short.ngoId), // ✅ only ngoId
+                                              builder: (_) => NgoDetailScreen(ngoId: widget.short.ngoId),
                                             ),
                                           );
                                         },
@@ -126,7 +212,6 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
                                     ],
                                   ),
                                   const SizedBox(height: 6),
-                                  // Tag pill - always visible
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                     decoration: BoxDecoration(
@@ -148,8 +233,6 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
                         ),
                         const SizedBox(height: 12),
 
-                        // Follow button
-
                         ElevatedButton(
                           onPressed: () {
                             ref.read(shortFollowStateProvider.notifier).toggleFollow(widget.short.id);
@@ -163,7 +246,6 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Expandable description (scrollable if too long)
                         ConstrainedBox(
                           constraints: BoxConstraints(
                             maxHeight: constraints.maxHeight * 0.3,
@@ -198,7 +280,7 @@ class _ShortPageItemState extends ConsumerState<ShortPageItem> {
                     ),
                   ),
 
-                  // Right-side action column: Like, Share, Report
+                  // Right-side action column
                   Positioned(
                     right: 12,
                     bottom: 20,

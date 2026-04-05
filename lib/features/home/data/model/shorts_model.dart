@@ -6,7 +6,9 @@ class ShortModel {
   final String description;
   final String? tag;
   final bool isFollowing;
-  final String ngoId; // add this field
+  final String ngoId;
+  final String? videoUrl;      // new
+  final String? imageUrl;      // optional for thumbnail
 
   ShortModel({
     required this.id,
@@ -15,6 +17,8 @@ class ShortModel {
     required this.description,
     this.tag,
     this.isFollowing = false,
-    required this.ngoId, // required
+    required this.ngoId,
+    this.videoUrl,
+    this.imageUrl,
   });
 }
